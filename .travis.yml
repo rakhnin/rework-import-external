@@ -5,4 +5,4 @@ node_js:
   - "8"
 before_install:
   - sudo apt-get update -q
-  - sudo apt-get install gcc-4.8 -y
+  - sudo apt-get install gcc -y
