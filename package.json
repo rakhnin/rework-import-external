@@ -1,0 +1,38 @@
+{
+  "name": "rework-import-external",
+  "version": "0.0.1",
+  "description": "A rework plugin to download and inline CSS for external source via @import",
+  "license": "MIT",
+  "repository": "rakhnin/rework-import-external",
+  "author": {
+    "name": "Andriy Rakhnin",
+    "email": "a@rakhnin.com"
+  },
+  "engines": {
+    "node": ">= 4"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha"
+  },
+  "main": "plugin.js",
+  "keywords": [
+    "css",
+    "import",
+    "media",
+    "rework",
+    "plugin",
+    "request"
+  ],
+  "dependencies": {
+    "async": "^2.5.0",
+    "iconv": "^2.3.0",
+    "request": "^2.81.0",
+    "rework": "^1.0.1",
+    "rework-plugin-url": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "sinon": "^2.3.7"
+  }
+}
