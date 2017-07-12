@@ -3,6 +3,10 @@ node_js:
   - "4"
   - "6"
   - "8"
-before_install:
-  - sudo apt-get update -q
-  - sudo apt-get install gcc -y
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8
+      - g++-4.8
