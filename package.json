@@ -12,7 +12,7 @@
     "node": ">= 4"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha"
+    "test": "cross-env NODE_ENV=test mocha"
   },
   "main": "plugin.js",
   "files": [
@@ -38,7 +38,8 @@
     "rework-plugin-url": "^1.1.0"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
+    "chai": "^4.1.0",
+    "cross-env": "^5.0.1",
     "mocha": "^3.4.2",
     "sinon": "^2.3.7"
   }
