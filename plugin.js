@@ -2,7 +2,7 @@
 
 const url = require('url')
 const request = require('request')
-const iconv = require('iconv')
+const iconv = require('iconv-lite')
 const eachSeries = require('async').eachSeries
 const parseImport = require('parse-import')
 const rework = require('rework')
