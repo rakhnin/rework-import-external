@@ -42,7 +42,7 @@ function load (source, options, next) {
  * @param  {Buffer|String} body    [description]
  * @return {String|null}
  */
-function detectCharsetEncoding (headers, body) {
+function detectCharsetEncoding (headers, bodyPart) {
   let encoding = null
   const httpCharsetRegex = /charset=([a-z0-9\-_]+)/i
   if (headers && headers['content-type']) {
@@ -52,7 +52,7 @@ function detectCharsetEncoding (headers, body) {
   if (!encoding) {
     // TODO detect by using stream of bytes that begins the style sheet. See table at https://www.w3.org/TR/CSS2/syndata.html#x57
     const cssCharsetRegex = /^@charset "([a-z0-9\-_]+)"/i
-    var matches = cssCharsetRegex.exec(body.slice(0, 256).toString())
+    var matches = cssCharsetRegex.exec(bodyPart.toString())
     encoding = (matches && matches[1]) || encoding
   }
   return encoding
@@ -65,7 +65,7 @@ function detectCharsetEncoding (headers, body) {
  */
 function decodeBody (res) {
   try {
-    const encoding = detectCharsetEncoding(res.headers, res.body)
+    const encoding = detectCharsetEncoding(res.headers, Buffer.from(res.body).slice(0, 256))
     return (encoding) ? iconv.decode(res.body, encoding) : res.body
   } catch (e) {
     return res.body
