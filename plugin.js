@@ -27,7 +27,7 @@ function load (source, options, next) {
     if (err) {
       return next(err)
     } else {
-      next(null, rework(decodeBody(res).toString(), Object.assign({}, options.rework || {}, {
+      next(null, rework(decodeBody(Buffer.from(res.body), res.headers).toString(), Object.assign({}, options.rework || {}, {
         source: res.headers.location || source
       })).use(reworkPluginUrl(function (uri) {
         return url.resolve(source, uri)
@@ -42,7 +42,7 @@ function load (source, options, next) {
  * @param  {Buffer|String} body    [description]
  * @return {String|null}
  */
-function detectCharsetEncoding (headers, bodyPart) {
+function detectCharsetEncoding (headers, body) {
   let encoding = null
   const httpCharsetRegex = /charset=([a-z0-9\-_]+)/i
   if (headers && headers['content-type']) {
@@ -52,7 +52,7 @@ function detectCharsetEncoding (headers, bodyPart) {
   if (!encoding) {
     // TODO detect by using stream of bytes that begins the style sheet. See table at https://www.w3.org/TR/CSS2/syndata.html#x57
     const cssCharsetRegex = /^@charset "([a-z0-9\-_]+)"/i
-    var matches = cssCharsetRegex.exec(bodyPart.toString())
+    var matches = cssCharsetRegex.exec(body)
     encoding = (matches && matches[1]) || encoding
   }
   return encoding
@@ -63,12 +63,12 @@ function detectCharsetEncoding (headers, bodyPart) {
  * @param  {Object} res of Response interface
  * @return {Buffer}
  */
-function decodeBody (res) {
+function decodeBody (body, headers) {
   try {
-    const encoding = detectCharsetEncoding(res.headers, Buffer.from(res.body).slice(0, 256))
-    return (encoding) ? iconv.decode(res.body, encoding) : res.body
+    const encoding = detectCharsetEncoding(headers, body.slice(0, 256).toString())
+    return (encoding) ? iconv.decode(body, encoding) : body
   } catch (e) {
-    return res.body
+    return body
   }
 }
 
