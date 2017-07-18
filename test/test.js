@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+'use strict'
 
 const request = require('request')
 const sinon = require('sinon')
