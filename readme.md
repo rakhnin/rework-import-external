@@ -1,4 +1,4 @@
-# rework-import-external
+# rework-import-external [![Build Status](http://img.shields.io/travis/rakhnin/rework-import-external.svg?style=flat)](https://travis-ci.org/rakhnin/rework-import-external)
 
 > A rework plugin to download and inline CSS for external source via @import
 
