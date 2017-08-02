@@ -27,11 +27,18 @@ function load (source, options, next) {
     if (err) {
       return next(err)
     } else {
-      next(null, rework(decodeBody(Buffer.from(res.body), res.headers).toString(), Object.assign({}, options.rework || {}, {
-        source: res.headers.location || source
-      })).use(reworkPluginUrl(function (uri) {
-        return url.resolve(source, uri)
-      })))
+      let reworkObj = null
+      let err = null
+      try {
+        reworkObj = rework(decodeBody(Buffer.from(res.body), res.headers).toString(), Object.assign({}, options.rework || {}, {
+          source: res.headers.location || source
+        })).use(reworkPluginUrl(function (uri) {
+          return url.resolve(source, uri)
+        }))
+      } catch (e) {
+        err = e
+      }
+      next(err, reworkObj)
     }
   })
 }
@@ -94,6 +101,7 @@ function run (stylesheet, options, next) {
 
   let rules = stylesheet.rules || []
   let ret = []
+  let errList = []
 
   eachSeries(rules, function (rule, cb) {
     switch (rule.type) {
@@ -110,6 +118,7 @@ function run (stylesheet, options, next) {
         options.skipToImportList.push(options.source)
         load(options.source, options, function (err, content) {
           if (err) {
+            errList.push(err)
             return setTimeout(cb, 0)
           }
           run(content.obj.stylesheet, options, function (_, __) {
@@ -139,9 +148,9 @@ function run (stylesheet, options, next) {
         ret.push(rule)
         return setTimeout(cb, 0)
     }
-  }, function (err) {
+  }, function () {
     stylesheet.rules = ret
-    next(err, stylesheet)
+    next(errList, stylesheet)
   })
 }
 
