@@ -1,6 +1,6 @@
 {
   "name": "rework-import-external",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A rework plugin to download and inline CSS for external source via @import",
   "license": "MIT",
   "repository": "rakhnin/rework-import-external",
