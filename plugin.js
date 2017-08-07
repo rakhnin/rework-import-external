@@ -151,7 +151,7 @@ function run (stylesheet, options, next) {
     }
   }, function () {
     stylesheet.rules = ret
-    next(errList, stylesheet)
+    next(errList.length ? errList : null, stylesheet)
   })
 }
 
