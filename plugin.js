@@ -30,7 +30,7 @@ function load (source, options, next) {
       let reworkObj = null
       let err = null
       try {
-        reworkObj = rework(decodeBody(Buffer.from(res.body), res.headers).toString(), Object.assign({}, options.rework || {}, {
+        reworkObj = rework(options.preProcessor(decodeBody(Buffer.from(res.body), res.headers).toString()), Object.assign({}, options.rework || {}, {
           source: res.headers.location || source
         })).use(reworkPluginUrl(function (uri) {
           return url.resolve(source, uri)
@@ -94,6 +94,7 @@ function run (stylesheet, options, next) {
     rework: {
       silent: false
     },
+    preProcessor: function (val) { return val },
     // TODO implement
     formatter: function (val) { return val },
     skipToImportList: []
